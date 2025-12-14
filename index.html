@@ -129,24 +129,41 @@
                     <textarea id="negativePrompt" rows="4" placeholder="Contoh: Hindari: teks di layar, subtitle, tulisan di video..." required></textarea>
                 </div>
 
-                <button type="submit" class="btn-primary">Generate Prompt</button>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-primary">Generate Prompt</button>
+                    <button type="button" id="resetBtn" class="btn-reset">Reset Form</button>
+                </div>
             </form>
         </div>
 
         <div id="outputSection" class="output-section" style="display: none;">
-            <h2>Hasil Prompt</h2>
+            <div class="output-header">
+                <h2>Hasil Prompt</h2>
+                <div class="language-toggle">
+                    <label class="toggle-label">
+                        <input type="radio" name="outputMode" value="indonesian" id="modeIndonesian" checked>
+                        <span>Bahasa Indonesia (Dapat Diedit)</span>
+                    </label>
+                    <label class="toggle-label">
+                        <input type="radio" name="outputMode" value="english" id="modeEnglish">
+                        <span>English (Dapat Diedit)</span>
+                    </label>
+                </div>
+            </div>
             <div class="output-columns">
                 <div class="output-column">
-                    <h3>Bahasa Indonesia (Dapat Diedit)</h3>
+                    <h3 id="outputIndonesianLabel">Bahasa Indonesia (Dapat Diedit)</h3>
                     <textarea id="outputIndonesian" class="output-textarea" rows="30"></textarea>
                 </div>
                 <div class="output-column">
-                    <h3>English (Final - Tidak Dapat Diedit)</h3>
+                    <h3 id="outputEnglishLabel">English (Final - Tidak Dapat Diedit)</h3>
                     <textarea id="outputEnglish" class="output-textarea" rows="30" readonly></textarea>
                 </div>
             </div>
-            <button id="copyIndonesianBtn" class="btn-copy">Copy Bahasa Indonesia</button>
-            <button id="copyEnglishBtn" class="btn-copy">Copy English</button>
+            <div class="copy-buttons">
+                <button id="copyIndonesianBtn" class="btn-copy">Copy Bahasa Indonesia</button>
+                <button id="copyEnglishBtn" class="btn-copy">Copy English</button>
+            </div>
         </div>
     </div>
 
