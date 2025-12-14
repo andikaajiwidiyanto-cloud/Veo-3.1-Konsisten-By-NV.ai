@@ -183,6 +183,11 @@ document.getElementById('promptForm').addEventListener('submit', function(e) {
     document.getElementById('outputEnglish').value = englishPrompt;
     document.getElementById('outputSection').style.display = 'block';
     
+    // Set default mode to Indonesian editable
+    currentEditMode = 'indonesian';
+    document.getElementById('modeIndonesian').checked = true;
+    updateOutputEditability();
+    
     // Scroll to output section
     document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
 });
@@ -264,10 +269,179 @@ document.getElementById('changeStyleBtn').addEventListener('click', function() {
     }
 });
 
+// Reset form functionality
+document.getElementById('resetBtn').addEventListener('click', function() {
+    if (confirm('Apakah Anda yakin ingin mengosongkan semua kolom form?')) {
+        document.getElementById('promptForm').reset();
+        document.getElementById('outputSection').style.display = 'none';
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});
+
+// Language mode toggle functionality
+let currentEditMode = 'indonesian'; // 'indonesian' or 'english'
+
+document.getElementById('modeIndonesian').addEventListener('change', function() {
+    if (this.checked) {
+        currentEditMode = 'indonesian';
+        updateOutputEditability();
+    }
+});
+
+document.getElementById('modeEnglish').addEventListener('change', function() {
+    if (this.checked) {
+        currentEditMode = 'english';
+        updateOutputEditability();
+    }
+});
+
+function updateOutputEditability() {
+    const indonesianTextarea = document.getElementById('outputIndonesian');
+    const englishTextarea = document.getElementById('outputEnglish');
+    const indonesianLabel = document.getElementById('outputIndonesianLabel');
+    const englishLabel = document.getElementById('outputEnglishLabel');
+    
+    if (currentEditMode === 'indonesian') {
+        // Indonesian editable, English readonly
+        indonesianTextarea.removeAttribute('readonly');
+        indonesianTextarea.style.background = 'white';
+        indonesianTextarea.style.cursor = 'text';
+        indonesianLabel.textContent = 'Bahasa Indonesia (Dapat Diedit)';
+        
+        englishTextarea.setAttribute('readonly', 'readonly');
+        englishTextarea.style.background = '#f8f9fa';
+        englishTextarea.style.cursor = 'default';
+        englishLabel.textContent = 'English (Final - Tidak Dapat Diedit)';
+    } else {
+        // English editable, Indonesian readonly
+        englishTextarea.removeAttribute('readonly');
+        englishTextarea.style.background = 'white';
+        englishTextarea.style.cursor = 'text';
+        englishLabel.textContent = 'English (Dapat Diedit)';
+        
+        indonesianTextarea.setAttribute('readonly', 'readonly');
+        indonesianTextarea.style.background = '#f8f9fa';
+        indonesianTextarea.style.cursor = 'default';
+        indonesianLabel.textContent = 'Bahasa Indonesia (Final - Tidak Dapat Diedit)';
+    }
+}
+
 // Update English output when Indonesian is edited
 document.getElementById('outputIndonesian').addEventListener('input', function() {
-    const indonesianText = this.value;
-    const englishText = translateToEnglish(indonesianText);
-    document.getElementById('outputEnglish').value = englishText;
+    if (currentEditMode === 'indonesian') {
+        const indonesianText = this.value;
+        const englishText = translateToEnglish(indonesianText);
+        document.getElementById('outputEnglish').value = englishText;
+    }
+});
+
+// Reverse translation dictionary (English to Indonesian)
+const reverseTranslations = {
+    '[SCENE TITLE:': '[JUDUL SCENE:',
+    '[CORE CHARACTER DESCRIPTION]': '[DESKRIPSI KARAKTER INTI]',
+    '[CHARACTER VOICE DETAILS]': '[DETAIL SUARA KARAKTER]',
+    '[CHARACTER ACTION]': '[AKSI KARAKTER]',
+    '[CHARACTER EXPRESSION]': '[EKSPRESI KARAKTER]',
+    '[SETTING & TIME]': '[LATAR TEMPAT & WAKTU]',
+    '[ADDITIONAL VISUAL DETAILS]': '[DETAIL VISUAL TAMBAHAN]',
+    'Camera Movement:': 'Gerakan Kamera:',
+    'Lighting:': 'Pencahayaan:',
+    'Video Style/Art Style:': 'Gaya Video/Art Style:',
+    'Visual Quality:': 'Kualitas Visual:',
+    '[OVERALL ATMOSPHERE]': '[SUASANA KESELURUHAN]',
+    '[ENVIRONMENT SOUND (AMBIENCE)]': '[SUARA LINGKUNGAN (AMBIENCE)]',
+    '[CHARACTER DIALOGUE]': '[DIALOG KARAKTER]',
+    'DIALOGUE in Indonesian:': 'DIALOG dalam Bahasa Indonesia:',
+    'Character says:': 'Karakter berkata:',
+    '[NEGATIVE PROMPT]': '[NEGATIVE PROMPT]',
+    'Avoid:': 'Hindari:',
+    'on-screen text': 'teks di layar',
+    'subtitles': 'subtitle',
+    'text in video': 'tulisan di video',
+    'distortion': 'distorsi',
+    'artifacts': 'artefak',
+    'anomalies': 'anomali',
+    'duplicate faces': 'wajah ganda',
+    'deformed limbs': 'anggota badan cacat',
+    'abnormal hands': 'tangan tidak normal',
+    'extra people': 'orang tambahan',
+    'distracting objects': 'objek mengganggu',
+    'low quality': 'kualitas rendah',
+    'blurry': 'buram',
+    'robotic voice': 'suara robotik',
+    'broken voice': 'suara pecah'
+};
+
+// Function to translate English back to Indonesian (basic reverse translation)
+function translateToIndonesian(text) {
+    let translated = text;
+    
+    // Replace section headers
+    Object.keys(reverseTranslations).forEach(key => {
+        translated = translated.replace(new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), reverseTranslations[key]);
+    });
+    
+    // Extract dialogue section to preserve it
+    const dialogueSection = translated.match(/\[DIALOG KARAKTER\][\s\S]*?(?=\[NEGATIVE PROMPT\]|$)/i);
+    let dialogueText = '';
+    if (dialogueSection) {
+        dialogueText = dialogueSection[0];
+        translated = translated.replace(dialogueSection[0], '___DIALOGUE_PLACEHOLDER___');
+    }
+    
+    // Basic reverse translations for common phrases
+    const commonReverseTranslations = {
+        'A ': 'Seorang ',
+        'male': 'pria',
+        'female': 'wanita',
+        'young': 'muda',
+        'aged': 'berusia',
+        'years old': 'tahun',
+        'Physique/Body Type:': 'Perawakan/Bentuk Tubuh:',
+        'body': 'tubuh',
+        'height': 'tinggi',
+        'skin color:': 'warna kulit:',
+        'Hair:': 'Rambut:',
+        'Face:': 'Wajah:',
+        'Clothing:': 'Pakaian:',
+        'Speaks with a voice': 'Dia berbicara dengan suara',
+        'that is warm and enthusiastic': 'yang hangat dan penuh semangat',
+        'Pitch:': 'Nada:',
+        'Timbre:': 'Timbre:',
+        'Accent/Dialect:': 'Aksen/Logat:',
+        'Speaking Style:': 'Cara Berbicara:',
+        'IMPORTANT:': 'PENTING:',
+        'All dialogue must be in Indonesian': 'Seluruh dialog harus dalam Bahasa Indonesia',
+        'location:': 'latar tempat:',
+        'Time:': 'Waktu:',
+        'night': 'malam hari',
+        'daytime': 'siang hari',
+        'morning': 'pagi hari',
+        'evening': 'sore hari',
+        'following the character\'s movement with smooth and cinematic motion to create engaging visual dynamics': 'mengikuti pergerakan karakter dengan gerakan yang halus dan sinematik untuk menciptakan dinamika visual yang menarik'
+    };
+    
+    // Apply common reverse translations
+    Object.keys(commonReverseTranslations).forEach(key => {
+        const regex = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        translated = translated.replace(regex, commonReverseTranslations[key]);
+    });
+    
+    // Restore dialogue section
+    if (dialogueText) {
+        translated = translated.replace('___DIALOGUE_PLACEHOLDER___', dialogueText);
+    }
+    
+    return translated;
+}
+
+// Update Indonesian output when English is edited
+document.getElementById('outputEnglish').addEventListener('input', function() {
+    if (currentEditMode === 'english') {
+        const englishText = this.value;
+        const indonesianText = translateToIndonesian(englishText);
+        document.getElementById('outputIndonesian').value = indonesianText;
+    }
 });
 
