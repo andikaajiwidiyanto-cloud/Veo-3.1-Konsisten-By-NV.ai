@@ -143,16 +143,98 @@ header h1 {
     transform: translateY(0);
 }
 
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-reset {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    width: 100%;
+}
+
+.btn-reset:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-reset:active {
+    transform: translateY(0);
+}
+
 .output-section {
     padding: 40px;
     border-top: 3px solid var(--border-color);
     background: var(--background-color);
 }
 
-.output-section h2 {
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.output-section h2 {
     color: var(--text-color);
     font-size: 1.8rem;
+    margin: 0;
+}
+
+.language-toggle {
+    display: flex;
+    gap: 15px;
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    user-select: none;
+}
+
+.toggle-label:hover {
+    background: rgba(74, 144, 226, 0.05);
+}
+
+.toggle-label input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.toggle-label input[type="radio"]:checked + span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.toggle-label:has(input[type="radio"]:checked) {
+    background: rgba(74, 144, 226, 0.15);
+    border: 1px solid rgba(74, 144, 226, 0.3);
 }
 
 .output-columns {
@@ -213,6 +295,12 @@ header h1 {
     box-shadow: var(--shadow);
 }
 
+.copy-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 @media (max-width: 768px) {
     .output-columns {
         grid-template-columns: 1fr;
@@ -230,6 +318,24 @@ header h1 {
     .form-container,
     .output-section {
         padding: 20px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .output-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .language-toggle {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .toggle-label {
+        width: 100%;
     }
 }
 
