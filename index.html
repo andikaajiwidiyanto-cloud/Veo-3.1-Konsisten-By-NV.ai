@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veo 3.1 Consistent Character Prompt Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="appTitle">Veo 3.1 Consistent Character Prompt Generator</h1>
+            <div class="header-controls">
+                <button id="changeTitleBtn" class="btn-secondary">Ubah Judul</button>
+                <button id="changeStyleBtn" class="btn-secondary">Ubah Style</button>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <form id="promptForm">
+                <div class="form-group">
+                    <label for="sceneTitle">1. Judul Scene</label>
+                    <input type="text" id="sceneTitle" placeholder="Contoh: terminal bus malam" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="characterDescription">2. Deskripsi Karakter Inti</label>
+                    <textarea id="characterDescription" rows="6" placeholder="Contoh: Seorang vlogger pria muda asal Maluku berusia 27 tahun. Perawakan/Bentuk Tubuh: tubuh kekar, tinggi 164cm..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="voiceDetails">3. Detail Suara Karakter</label>
+                    <textarea id="voiceDetails" rows="6" placeholder="Contoh: Dia berbicara dengan suara pria muda yang hangat dan penuh semangat. Nada: Young Male..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="characterAction">4. Aksi Karakter</label>
+                    <textarea id="characterAction" rows="3" placeholder="Contoh: berjalan di sekitar terminal bus malam sambil melihat-lihat aktivitas penumpang dan pedagang." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="characterExpression">5. Ekspresi Karakter</label>
+                    <textarea id="characterExpression" rows="3" placeholder="Contoh: Karakter menunjukkan ekspresi kagum dan antusias, sering tersenyum sambil melirik kamera." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="setting">6. Latar Tempat & Waktu</label>
+                    <textarea id="setting" rows="4" placeholder="Contoh: latar tempat: di terminal bus antar kota malam hari, terdapat pedagang kaki lima..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cameraMovement">7. Gerakan Kamera</label>
+                    <select id="cameraMovement" required>
+                        <option value="">Pilih gerakan kamera...</option>
+                        <option value="tracking shot">Tracking Shot (Kamera mengikuti subjek yang bergerak)</option>
+                        <option value="dolly in">Dolly In (Kamera mendekati subjek)</option>
+                        <option value="dolly out">Dolly Out (Kamera menjauhi subjek)</option>
+                        <option value="pan left">Pan Left (Kamera berputar ke kiri)</option>
+                        <option value="pan right">Pan Right (Kamera berputar ke kanan)</option>
+                        <option value="tilt up">Tilt Up (Kamera bergerak ke atas)</option>
+                        <option value="tilt down">Tilt Down (Kamera bergerak ke bawah)</option>
+                        <option value="crane up">Crane Up (Kamera naik menggunakan crane)</option>
+                        <option value="crane down">Crane Down (Kamera turun menggunakan crane)</option>
+                        <option value="handheld">Handheld (Kamera dipegang langsung oleh operator)</option>
+                        <option value="steadicam">Steadicam (Kamera dipasang pada stabilizer)</option>
+                        <option value="snorricam">Snorricam (Kamera dipasang pada tubuh aktor)</option>
+                        <option value="zoom in">Zoom In (Kamera memperbesar subjek)</option>
+                        <option value="zoom out">Zoom Out (Kamera memperkecil subjek)</option>
+                        <option value="arc left">Arc Left (Kamera bergerak melingkar ke kiri)</option>
+                        <option value="arc right">Arc Right (Kamera bergerak melingkar ke kanan)</option>
+                        <option value="push in">Push In (Kamera mendorong masuk ke subjek)</option>
+                        <option value="pull out">Pull Out (Kamera menarik keluar dari subjek)</option>
+                        <option value="3d rotation">3D Rotation (Rotasi 3D)</option>
+                        <option value="orbit">Orbit (Kamera mengorbit di sekitar subjek)</option>
+                        <option value="fly through">Fly Through (Kamera terbang melewati ruang)</option>
+                        <option value="reveal">Reveal (Kamera mengungkapkan subjek secara bertahap)</option>
+                        <option value="whip pan">Whip Pan (Kamera berputar cepat)</option>
+                        <option value="dutch angle">Dutch Angle (Kamera miring untuk efek dramatis)</option>
+                        <option value="bird's eye view">Bird's Eye View (Pandangan dari atas)</option>
+                        <option value="worm's eye view">Worm's Eye View (Pandangan dari bawah)</option>
+                        <option value="rack focus">Rack Focus (Perubahan fokus dari satu subjek ke subjek lain)</option>
+                        <option value="parallax">Parallax (Efek paralaks dengan gerakan kamera)</option>
+                        <option value="circular motion">Circular Motion (Gerakan melingkar)</option>
+                        <option value="spiral">Spiral (Gerakan spiral)</option>
+                        <option value="vertical rise">Vertical Rise (Kamera naik vertikal)</option>
+                        <option value="vertical drop">Vertical Drop (Kamera turun vertikal)</option>
+                        <option value="horizontal slide">Horizontal Slide (Kamera bergeser horizontal)</option>
+                        <option value="diagonal movement">Diagonal Movement (Gerakan diagonal)</option>
+                        <option value="jib up">Jib Up (Kamera naik menggunakan jib)</option>
+                        <option value="jib down">Jib Down (Kamera turun menggunakan jib)</option>
+                        <option value="camera shake">Camera Shake (Goyangan kamera untuk efek realistis)</option>
+                        <option value="smooth glide">Smooth Glide (Kamera meluncur halus)</option>
+                        <option value="static">Static (Kamera diam/tidak bergerak)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lighting">Pencahayaan</label>
+                    <input type="text" id="lighting" placeholder="Contoh: natural dari lampu jalan dan lampu bus, pantulan cahaya pada aspal basah" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoStyle">Gaya Video/Art Style</label>
+                    <input type="text" id="videoStyle" placeholder="Contoh: cinematic realistis" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="visualQuality">Kualitas Visual</label>
+                    <input type="text" id="visualQuality" placeholder="Contoh: Resolusi 4K" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="overallAtmosphere">8. Suasana Keseluruhan</label>
+                    <textarea id="overallAtmosphere" rows="3" placeholder="Contoh: Suasana sibuk, ramai, dengan kesan perjalanan malam yang hidup dan dinamis meskipun hujan." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="ambientSound">9. Suara Lingkungan/Ambience</label>
+                    <textarea id="ambientSound" rows="3" placeholder="Contoh: SOUND: suara mesin bus menyala, pengumuman dari pengeras suara..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="characterDialogue">10. Dialog Karakter</label>
+                    <textarea id="characterDialogue" rows="3" placeholder="Contoh: DIALOG dalam Bahasa Indonesia: Karakter berkata: Tiap kota punya terminal kayak gini..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="negativePrompt">11. Negative Prompt</label>
+                    <textarea id="negativePrompt" rows="4" placeholder="Contoh: Hindari: teks di layar, subtitle, tulisan di video..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Generate Prompt</button>
+            </form>
+        </div>
+
+        <div id="outputSection" class="output-section" style="display: none;">
+            <h2>Hasil Prompt</h2>
+            <div class="output-columns">
+                <div class="output-column">
+                    <h3>Bahasa Indonesia (Dapat Diedit)</h3>
+                    <textarea id="outputIndonesian" class="output-textarea" rows="30"></textarea>
+                </div>
+                <div class="output-column">
+                    <h3>English (Final - Tidak Dapat Diedit)</h3>
+                    <textarea id="outputEnglish" class="output-textarea" rows="30" readonly></textarea>
+                </div>
+            </div>
+            <button id="copyIndonesianBtn" class="btn-copy">Copy Bahasa Indonesia</button>
+            <button id="copyEnglishBtn" class="btn-copy">Copy English</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
